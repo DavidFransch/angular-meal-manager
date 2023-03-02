@@ -15,8 +15,7 @@ export interface AuthResponseData {
 
 @Injectable({ providedIn: 'root'})
 export class AuthService {
-
-  user = new Subject<User>()
+  user = new Subject<User>();
 
   constructor(private http: HttpClient) {}
 
@@ -46,7 +45,10 @@ export class AuthService {
         returnSecureToken: true,
       }
     )
-    .pipe(catchError(this.handleError));
+    .pipe(catchError(this.handleError), tap(responseData => {
+      this.handleAuthentication(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
+    })
+  );
   }
 
   private handleAuthentication(email: string, userId: string, token: string, expiresIn: number) {
