@@ -35,7 +35,7 @@ export class AuthComponent {
     } else {
       authObservable = this.authService.signup(email, password);
     }
-    
+
     authObservable.subscribe(
       responseData => {
         console.log(responseData);
@@ -50,5 +50,9 @@ export class AuthComponent {
     );
 
     form.reset();
+  }
+
+  onHandleError() {
+    this.error = null;
   }
 }
